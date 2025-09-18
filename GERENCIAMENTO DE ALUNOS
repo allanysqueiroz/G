@@ -1,0 +1,173 @@
+  INDEX.JSconst readline = require("readline-sync");
+const estudantes = require("./estudantes");
+
+let opcao;
+do {
+  console.log("\n=== Sistema de Estudantes ===");
+  console.log("1 - Listar");
+  console.log("2 - Buscar por nome");
+  console.log("3 - Adicionar");
+  console.log("4 - Cálculos");
+  console.log("5 - Relatórios");
+  console.log("0 - Sair");
+
+  opcao = readline.questionInt("Escolha: ");
+
+  switch (opcao) {
+    case 1:
+        estudantes.listarEstudantes();
+      break;
+    case 2:
+        nome = readline.question("Digite o nome: ");
+        estudantes.buscarEstudantePorNome(nome);
+
+      break;
+    case 3:
+        nome = readline.question("digite o nome: ");
+        idade = readline.questionInt("digite a idade: ");
+        nota = readline.question("digite a notas: ");
+        notas = nota.split(" ").map(parseFloat);
+        estudante = { nome: nome, idade: idade, notas: notas };
+        estudantes.adicionarEstudante(estudante);
+
+      break;
+    case 4:
+        console.log("\n=== Cálculos ===");
+        console.log("1 - Média Individual");
+        console.log("2 - Média Geral");
+        console.log("3 - Maior Média");
+        console.log("0 - voltar");
+        escolha = readline.questionInt("Escolha ");
+        switch(escolha){
+            case 1:
+
+            break;
+            case 2:
+            
+            break;
+            case 3:
+            
+            break;
+        }
+      break;
+    case 5:
+      
+      break;
+  }
+} while (opcao !== 0);
+
+Estudantes.js
+let estudantes = require("./data");
+
+function listarEstudantes() {
+    estudantes.forEach(estudante => console.log(estudante.nome));
+}
+
+function buscarEstudantePorNome(nome) {
+  const estudante = estudantes.find(estudante => estudante.nome.toLowerCase().includes(nome.toLowerCase()));
+  console.log(estudante);
+}
+
+function adicionarEstudante(estudante) {
+  estudantes.push(estudante)
+}
+
+function media(notas) {
+  let soma = 0;
+  for (i = 0; i < notas.length; i++) {
+    let nota = notas[i];
+    soma = soma+nota;
+  }
+  return soma/notas.length;
+}
+
+function mediaIndividual() {
+  estudantes.forEach(estudante => {
+    const m = media(estudante.notas);
+    console.log(`${estudante.nome}: Média = ${m}`);
+  });
+}
+
+function mediaGeral() {
+  let todasNotas = [];
+  estudantes.forEach(estudante => {
+    todasNotas = todasNotas.concat(estudante.notas);
+  });
+  const mGeral = media(todasNotas);
+  console.log(`Média geral da turma: ${mGeral}`);
+  return mGeral;
+}
+
+function maiorMedia() {
+  let maior = -Infinity;
+  let nomeMaior = "";
+  estudantes.forEach(estudante => {
+    const m = media(estudante.notas);
+    if (m > maior) {
+      maior = m;
+      nomeMaior = estudante.nome;
+    }
+  });
+  console.log(`Maior média: ${maior} (${nomeMaior})`);
+  return { nome: nomeMaior, media: maior };
+}
+
+function aprovados() {
+  const lista = estudantes.filter(estudante => media(estudante.notas) >= 7);
+  console.log("Aprovados:");
+  lista.forEach(e => console.log(e.nome));
+  return lista;
+}
+
+function recuperacao() {
+  const lista = estudantes.filter(estudante => {
+    const m = media(estudante.notas);
+    return m >= 5 && m < 7;
+  });
+  console.log("Recuperação:");
+  lista.forEach(e => console.log(e.nome));
+  return lista;
+}
+
+function reprovados() {
+  const lista = estudantes.filter(estudante => media(estudante.notas) < 5);
+  console.log("Reprovados:");
+  lista.forEach(e => console.log(e.nome));
+  return lista;
+}
+
+// Função para atualizar notas de um estudante
+function atualizarEstudante(nome, novasNotas) {
+  const estudante = estudantes.find(e => e.nome.toLowerCase() === nome.toLowerCase());
+  if (estudante) {
+    estudante.notas = novasNotas;
+    console.log(`Notas de ${estudante.nome} atualizadas para: ${novasNotas}`);
+  } else {
+    console.log("Estudante não encontrado.");
+  }
+}
+
+module.exports = {
+  listarEstudantes,
+  buscarEstudantePorNome,
+  adicionarEstudante,
+  atualizarEstudante,
+  mediaIndividual,
+  mediaGeral,
+  maiorMedia,
+  aprovados,
+  recuperacao,
+  reprovados,
+};''
+
+data.js
+const estudantes = [
+  { nome: "Maria Silva", idade: 20, notas: [10, 9.8] },
+  { nome: "Frank Souza", idade: 22, notas: [6, 7, 9, 10] }
+];
+
+module.exports = estudantes;
+
+
+
+console.log("Encerrando o sistema...");
